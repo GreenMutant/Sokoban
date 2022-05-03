@@ -1,0 +1,30 @@
+.tile-wall {
+	background: url("../images/wall.png");
+	width: 50px;
+	height: 50px;
+}
+.tile-space {
+	background: #FFF;
+	width: 50px;
+	height: 50px;
+}
+.tile-goal {
+	background: url("../images/goal.jpg");
+	width: 50px;
+	height: 50px;
+}
+.entity-player {
+	background: url("../images/bowser.jpg");
+	width: 50px;
+	height: 50px;
+}
+.entity-block {
+	background: url("../images/box.jpg");
+	width: 50px;
+	height: 50px;
+}
+.entity-block-goal {
+	background: url("../images/boxComplete.jpg");
+	width: 50px;
+	height: 50px;
+}
