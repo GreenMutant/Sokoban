@@ -154,7 +154,7 @@
 })();
 
 function Congratulations() {
-	setTimeout(function(){ alert("Congratulations!\nNew game?") ? "" : location.reload(); }, 300);
+	setTimeout(function(){ alert("Congratulations!\nOK - New Game") ? "" : location.reload(); }, 300);
 	
 	
 }
