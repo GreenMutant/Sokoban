@@ -2,7 +2,6 @@
 
 (function() {
 	
-	
 	function drawMap(map) {
 		var main = document.createElement("div");
 		main.style.width = map.width * 50 + "px";
@@ -46,6 +45,7 @@
 	function move(entity, direction) {
 		var x = entity.positionX;
 		var y = entity.positionY;
+		
 
 		switch(direction) {
 			case "left":
@@ -63,50 +63,48 @@
 			default:
 				return false;
 		}
-	
-		var nPosition = document.getElementById(x + "-" + y); 
-		var oPosition = document.getElementById(entity.positionX + "-" + entity.positionY);
-		let goalTiles = document.getElementsByClassName(Tiles.Goal)
-		let blockDoneTiles = document.getElementsByClassName(Entities.BlockDone)
 
-	
-		if(nPosition.classList.contains(Tiles.Wall)) {
-			return false;
-		} else {
+	var nPosition = document.getElementById(x + "-" + y); 
+	var oPosition = document.getElementById(entity.positionX + "-" + entity.positionY);
+	let goalTiles = document.getElementsByClassName(Tiles.Goal)
+	let blockDoneTiles = document.getElementsByClassName(Entities.BlockDone)
 
-			if(nPosition.classList.contains(Entities.Block)) {
-				
-				var blockIndex = blocks.findIndex((e, i) => e.positionY == y && e.positionX == x);
-				var block = blockIndex > -1 ? blocks[blockIndex] : null;
-				if(block !== null) {
+	if(nPosition.classList.contains(Tiles.Wall)) {
+		return false;
+	} else {
 
-					if(!entity.isPlayer) {
-						return false;
+		if(nPosition.classList.contains(Entities.Block)) {
+			
+			var blockIndex = blocks.findIndex((e, i) => e.positionY == y && e.positionX == x);
+			var block = blockIndex > -1 ? blocks[blockIndex] : null;
+			if(block !== null) {
+
+				if(!entity.isPlayer) {
+					return false;
+				}
+				if(!move(block, direction)){
+					return false;
+				}
+			
+				for(i = 0; i < goalTiles.length; i ++) {
+					if (goalTiles[i].classList.contains(Entities.Block)) {
+						goalTiles[i].classList.add(Entities.BlockDone);
+					} else {
+						goalTiles[i].classList.remove(Entities.BlockDone)
 					}
-					if(!move(block, direction)){
-						return false;
-					}
-
-					for(i = 0; i < goalTiles.length; i ++) {
-						if (goalTiles[i].classList.contains(Entities.Block)) {
-							goalTiles[i].classList.add(Entities.BlockDone);
-						} else {
-							goalTiles[i].classList.remove(Entities.BlockDone)
-						}
-					}
+				}
+				if( blockDoneTiles.length == goalTiles.length) {
 					
-					if( blockDoneTiles.length == goalTiles.length) {
-						
-						Congratulations()
-					}
-					
-					nPosition.classList.add(entity.type);
-					oPosition.classList.remove(entity.type);
-
+					Congratulations()
 				}
 				
+				nPosition.classList.add(entity.type);
+				oPosition.classList.remove(entity.type);
+
 			}
+			
 		}
+	}
 		
 		nPosition.classList.add(entity.type);
 		oPosition.classList.remove(entity.type);
@@ -115,9 +113,20 @@
 		entity.positionY = y;
 		return true;
 	}
-	
-	function readKey(event) {
 
+	document.addEventListener("keydown", 
+
+	function(e) {
+		if (e.key == "ArrowLeft" || e.key == "ArrowRight" || e.key == "ArrowUp" || e.key == "ArrowDown") {
+			e.preventDefault();
+			if(MovePlayer(e.key)) {
+				moves++;
+			}
+		}
+	})
+
+	function readKey(event) {
+		
 		switch(event.keyCode) {
 			case 37:
 				move(player, "left");
@@ -147,7 +156,8 @@
 	document.onreadystatechange = function() {
 		if(document.readyState === 'complete') {
 			drawMap(tileMap01);
-			document.onkeyup = readKey;
+			
+			document.addEventListener("keydown", readKey);
 		}
 	}
 	
